@@ -19,7 +19,7 @@ public class Calculator {
                     String nameCableInTheResultData = calculatingResult.get(j).getCableData()[1];
                     if (nameCableInTheOriginalData.equals(nameCableInTheResultData)) {
                         Data tempData = new CableMagazineData();
-                        //Копировать название кабеля в результирующий массив строк!!!!
+                        tempData.setCableData(1, nameCableInTheOriginalData);
                         for (int i = 14; i <= 27; i++) {
                             int a,b,c;
                             try{
