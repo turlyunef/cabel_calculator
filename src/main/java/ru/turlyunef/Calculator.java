@@ -13,8 +13,8 @@ public class Calculator {
                 calculatingResult.add(x);
             } else {
                 int count = calculatingResult.size();
+                boolean cableSummed = false;
                 for (int j = 0; j < count; j++) {
-
                     String nameCableInTheOriginalData = x.getCableData()[1];
                     String nameCableInTheResultData = calculatingResult.get(j).getCableData()[1];
                     if (nameCableInTheOriginalData.equals(nameCableInTheResultData)) {
@@ -37,20 +37,18 @@ public class Calculator {
                             } catch (NumberFormatException e){
                                 c = 0;
                             }
-
                             tempData.setCableData(i-1, String.valueOf(a + b * c));
-
                         }
                         calculatingResult.set(j, tempData);
-
-                    } else {
-                        calculatingResult.add(x);
-
-                    }
+                        cableSummed = true;
+                    } 
+                }
+                if (!cableSummed) {
+                    calculatingResult.add(x);
                 }
             }
         }
+        
         return calculatingResult;
     }
-
 }

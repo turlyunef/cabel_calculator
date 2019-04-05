@@ -5,9 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
-/**
- * Hello world!
- */
 public class App {
     private static Logger log = LoggerFactory.getLogger(App.class);
 
