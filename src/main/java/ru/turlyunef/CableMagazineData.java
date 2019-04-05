@@ -24,7 +24,11 @@ public class CableMagazineData implements Data {
             OneCableData[arrayIndex] = "";
         }
         OneCableData[arrayIndex] = OneCableData[arrayIndex] + element;
-        System.out.println("OneCableData[" + arrayIndex + "] = " + OneCableData[arrayIndex]);
+    }
+
+    @Override
+    public void setCableData(int indexElementInArray, String cableData) {
+        this.OneCableData [indexElementInArray] = cableData;
     }
 
 

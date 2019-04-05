@@ -16,7 +16,7 @@ public class App {
         Data data = new CableMagazineData();
         ArrayList<Data> allData;
         allData = FileConverter.convertFileToArrays("Resources/in.csv", data);
-
+        ArrayList<Data> result = Calculator.calculateCableMagazineData(allData);
         log.info("End the program");
     }
 }

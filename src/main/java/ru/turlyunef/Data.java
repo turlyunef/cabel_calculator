@@ -7,4 +7,6 @@ public interface Data {
 
     void addCharToCableData(int arrayIndex, char element);
 
+    void setCableData(int indexElementInArray, String cableData);
+
 }
