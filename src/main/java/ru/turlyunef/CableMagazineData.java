@@ -2,16 +2,29 @@ package ru.turlyunef;
 
 public class CableMagazineData implements Data {
     private int ElementsQuantityInStr = 30;
-    private String[] OneCableData = new String[ElementsQuantityInStr];
+    private String[] OneCableData;
+
+    public CableMagazineData() {
+        OneCableData = new String[ElementsQuantityInStr];
+    }
 
     @Override
-    public String[] getCableType() {
+    public String[] getCableData() {
         return OneCableData;
     }
 
     @Override
     public int getElementsQuantityInStr() {
-        return 0;
+        return ElementsQuantityInStr;
+    }
+
+    @Override
+    public void addCharToCableData(int arrayIndex, char element) {
+        if (OneCableData[arrayIndex] == null){
+            OneCableData[arrayIndex] = "";
+        }
+        OneCableData[arrayIndex] = OneCableData[arrayIndex] + element;
+        System.out.println("OneCableData[" + arrayIndex + "] = " + OneCableData[arrayIndex]);
     }
 
 

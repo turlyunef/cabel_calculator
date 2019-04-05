@@ -1,8 +1,10 @@
 package ru.turlyunef;
 
 public interface Data {
-    String[] getCableType();
+    String[] getCableData();
 
     int getElementsQuantityInStr();
+
+    void addCharToCableData(int arrayIndex, char element);
 
 }
