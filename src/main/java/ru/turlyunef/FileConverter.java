@@ -3,19 +3,18 @@ package ru.turlyunef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 
 public class FileConverter {
     private static Logger log = LoggerFactory.getLogger(FileConverter.class);
 
-    public static ArrayList<Data> convertFileToArrays(String fileName, Data data) {
+    public static ArrayList<Data> convertFileToDataArrays(String fileName, Data data) {
         ArrayList<Data> arrayFromFile = new ArrayList<>();
-        try (FileInputStream fstream = new FileInputStream(fileName);
-             BufferedReader br = new BufferedReader(new InputStreamReader(fstream))) {
+        File file = new File(fileName);
+        try (
+                FileInputStream fstream = new FileInputStream(file);
+                BufferedReader br = new BufferedReader(new InputStreamReader(fstream))) {
             int symbol;
             int indexOfDataForTheActualCable = 0; //положение в наполняемом кабеле (ориентация относительно CableMagazineData
             boolean strStarted = false;
@@ -25,10 +24,10 @@ public class FileConverter {
                 if (symbol != -1) {
                     char c = (char) symbol;
                     if (((char) symbol == '\r') | ((char) symbol == '\n')) { // Отбрасываем переход на новую строку
-                    } else if ((c == '\"') && (strStarted == false)) {
+                    } else if ((c == '\"') && (!strStarted)) {
                         //Начало ячейки, начинаем считывать в следующих шагах
                         strStarted = true;
-                    } else if ((c == '\"') && (strStarted == true)) {
+                    } else if ((c == '\"') && (strStarted)) {
                         //Конец ячейки, закрываем ее
                         if (indexOfDataForTheActualCable == data.getElementsQuantityInStr() - 1) {
                             arrayFromFile.add(tempData);
@@ -38,7 +37,7 @@ public class FileConverter {
                             indexOfDataForTheActualCable += 1;
                         }
                         strStarted = false;
-                    } else if (strStarted == true) {
+                    } else if (strStarted) {
                         tempData.addCharToCableData(indexOfDataForTheActualCable, c);
                     }
                 } else {
@@ -47,10 +46,29 @@ public class FileConverter {
             }
         } catch (
                 IOException e) {
-            log.error("File read error");
+            log.error("File " + fileName + " read error");
         }
 
         return arrayFromFile;
     }
 
+    public static ArrayList<String> convertFileToArrayList(String fileName) {
+        ArrayList<String> listFromFile = new ArrayList<>();
+        try (FileInputStream fstream = new FileInputStream(fileName);
+             BufferedReader br = new BufferedReader(new InputStreamReader(fstream))) {
+            String strLine;
+            while (true) {
+                strLine = br.readLine();
+                if (strLine != null) {
+                    listFromFile.add(strLine);
+                } else {
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            log.error("File " + fileName + " read error");
+        }
+
+        return listFromFile;
+    }
 }
