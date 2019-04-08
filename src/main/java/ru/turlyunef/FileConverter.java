@@ -19,16 +19,36 @@ public class FileConverter {
             int indexOfDataForTheActualCable = 0; //положение в наполняемом кабеле (ориентация относительно CableMagazineData
             boolean strStarted = false;
             Data tempData = new CableMagazineData(); //!заглушка
+            char lastSymbol;
+            symbol = br.read();
+            if (symbol != -1) {
+                lastSymbol = (char) symbol;
+            }
+            else {
+                return null;
+            }
+            boolean IsLastQuotationMarkwasData = false;
             while (true) {
                 symbol = br.read();
                 if (symbol != -1) {
                     char c = (char) symbol;
-                    if (((char) symbol == '\r') | ((char) symbol == '\n')) { // Отбрасываем переход на новую строку
-                    } else if ((c == '\"') && (!strStarted)) {
+                    if ((lastSymbol == '\r') | (lastSymbol == '\n')) { // Отбрасываем переход на новую строку
+                    } else if ((lastSymbol == '\"') && (!strStarted)) {
                         //Начало ячейки, начинаем считывать в следующих шагах
                         strStarted = true;
-                    } else if ((c == '\"') && (strStarted)) {
+                        lastSymbol = c;
+                    }
+
+                    else if ((lastSymbol == '\"') & (c == '\"') & (IsLastQuotationMarkwasData)) {
+                        tempData.addCharToCableData(indexOfDataForTheActualCable, lastSymbol);
+                        lastSymbol = c;
+                        IsLastQuotationMarkwasData = false;
+                    }
+
+
+                    else if ((lastSymbol == '\"') & (c != '\"') & (!IsLastQuotationMarkwasData)) {
                         //Конец ячейки, закрываем ее
+                        IsLastQuotationMarkwasData = true;
                         if (indexOfDataForTheActualCable == data.getElementsQuantityInStr() - 1) {
                             arrayFromFile.add(tempData);
                             tempData = new CableMagazineData();
@@ -37,8 +57,17 @@ public class FileConverter {
                             indexOfDataForTheActualCable += 1;
                         }
                         strStarted = false;
-                    } else if (strStarted) {
-                        tempData.addCharToCableData(indexOfDataForTheActualCable, c);
+                        lastSymbol = c;
+                    } else if ((lastSymbol == '\"') & (c != '\"') & (IsLastQuotationMarkwasData)) {
+                        tempData.addCharToCableData(indexOfDataForTheActualCable, lastSymbol);
+                        lastSymbol = c;
+                        IsLastQuotationMarkwasData = false;
+
+                    }
+                    else if (strStarted) {
+                        tempData.addCharToCableData(indexOfDataForTheActualCable, lastSymbol);
+                        lastSymbol = c;
+
                     }
                 } else {
                     break;

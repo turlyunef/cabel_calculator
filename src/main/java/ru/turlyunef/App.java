@@ -13,7 +13,7 @@ public class App {
         log.info("Start the program");
         Data data = new CableMagazineData();
         ArrayList<Data> allData;
-        allData = FileConverter.convertFileToDataArrays("Resources/in.csv", data);
+        allData = FileConverter.convertFileToDataArrays("Resources/in.txt", data);
         ArrayList<Data> result = Calculator.calculateCableMagazineData(allData, false);
         File outputFile = new File(DataSaver.OUTPUT_FILE_NAME);
         outputFile.delete();
