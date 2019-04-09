@@ -6,9 +6,11 @@ import static java.lang.Integer.parseInt;
 
 public class Calculator {
 
+    public static final String WIRE_NAMES_PATH = "Config/Wires.txt";
+
     public static ArrayList<Data> calculateCableMagazineData(ArrayList<Data> data, boolean isItForVOR) {
         ArrayList<Data> calculatingResult = new ArrayList<>();
-        ArrayList<String> wires = FileConverter.convertFileToArrayList("Resources/Wires.txt");
+        ArrayList<String> wires = FileConverter.convertFileToArrayList(WIRE_NAMES_PATH);
         for (Data x : data
         ) {
             String nameCableInTheOriginalData;
