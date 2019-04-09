@@ -1,0 +1,7 @@
+elementsQuantityInStr=30
+leftColumnCablesSection=14
+rightColumnCablesSection=27
+columnPositionOfQuantitySectionCables=28
+columnPositionOfQuantityCables=29
+wireNamesPath=Config/Wires.txt
+TYPE_CABLING_PATH=Config/TypeCabling.txt

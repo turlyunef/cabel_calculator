@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FileConverter {
     private static Logger log = LoggerFactory.getLogger(FileConverter.class);
@@ -110,5 +111,26 @@ public class FileConverter {
         }
 
         return listFromFile;
+    }
+
+    public static HashMap<String, String> parseConfig(String fileName){
+        HashMap<String, String> config = new HashMap<>();
+        try (FileReader fileReader = new FileReader(fileName);
+             BufferedReader br = new BufferedReader(fileReader)) {
+            String strLine;
+            while (true) {
+                strLine = br.readLine();
+                if (strLine != null) {
+                    String[] hashMap = strLine.split("=", 2);
+                    config.put(hashMap[0], hashMap [1]);
+                } else {
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            log.error("File " + fileName + " read error");
+        }
+
+        return config;
     }
 }
