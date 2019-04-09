@@ -23,51 +23,62 @@ public class FileConverter {
             symbol = br.read();
             if (symbol != -1) {
                 lastSymbol = (char) symbol;
-            }
-            else {
+            } else {
                 return null;
             }
             boolean IsLastQuotationMarkwasData = false;
             while (true) {
                 symbol = br.read();
                 if (symbol != -1) {
-                    char c = (char) symbol;
+                    char nextSymbol = (char) symbol;
                     if ((lastSymbol == '\r') | (lastSymbol == '\n')) { // Отбрасываем переход на новую строку
-                    } else if ((lastSymbol == '\"') && (!strStarted)) {
-                        //Начало ячейки, начинаем считывать в следующих шагах
-                        strStarted = true;
-                        lastSymbol = c;
+                        lastSymbol = nextSymbol;
+                        continue;
                     }
-
-                    else if ((lastSymbol == '\"') & (c == '\"') & (IsLastQuotationMarkwasData)) {
-                        tempData.addCharToCableData(indexOfDataForTheActualCable, lastSymbol);
-                        lastSymbol = c;
-                        IsLastQuotationMarkwasData = false;
-                    }
-
-
-                    else if ((lastSymbol == '\"') & (c != '\"') & (!IsLastQuotationMarkwasData)) {
-                        //Конец ячейки, закрываем ее
-                        IsLastQuotationMarkwasData = true;
-                        if (indexOfDataForTheActualCable == data.getElementsQuantityInStr() - 1) {
-                            arrayFromFile.add(tempData);
-                            tempData = new CableMagazineData();
-                            indexOfDataForTheActualCable = 0;
+                    if (IsLastQuotationMarkwasData) { // Эти кавычки – данные, записываем их в tempData
+                        IsLastQuotationMarkwasData = false; // меняем флаг о том, что след кавычки - уже не данные
+                        lastSymbol = nextSymbol;
+                        continue;
+                    } else {
+                        if (lastSymbol == '\"') {
+                            if (!strStarted) {
+                                // Начинаем считывание строки
+                                strStarted = true;
+                                lastSymbol = nextSymbol;
+                                continue;
+                            } else {
+                                //Нужно проверить конец это элемента данных или нет
+                                if (nextSymbol == '\"') {
+                                    //Эти кавычки – данные, записываем их в tempData
+                                    tempData.addCharToCableData(indexOfDataForTheActualCable, lastSymbol);
+                                    //След. Кавычки - тоже данные, ставим флаг об этом
+                                    IsLastQuotationMarkwasData = true;
+                                } else {
+                                    //Эти lastSymbol  кавычки – окончание ячейки данных
+                                    strStarted = false;
+                                    if (indexOfDataForTheActualCable == data.getElementsQuantityInStr() - 1) { // Эти кавычки  последнего элемента данных объекта данных?
+                                        arrayFromFile.add(tempData); //Записываем полученный объект в массив объектов, обнуляем индекс положения считывания данных объекта
+                                        tempData = new CableMagazineData();
+                                        indexOfDataForTheActualCable = 0;
+                                    } else {
+                                        indexOfDataForTheActualCable += 1; //Смещаем индекс положения считывания данных объекта на 1 вперед
+                                    }
+                                }
+                                lastSymbol = nextSymbol;
+                                continue;
+                            }
                         } else {
-                            indexOfDataForTheActualCable += 1;
+                            if (strStarted) {
+                                //Значит элемент lastSymbol - данные
+                                //Записываем lastSymbol В tempData
+                                tempData.addCharToCableData(indexOfDataForTheActualCable, lastSymbol);
+                            }
+                            //Значит элемент lastSymbol - разделитель
+                            //Пропускаем элемент
+
+                            lastSymbol = nextSymbol;
+                            continue;
                         }
-                        strStarted = false;
-                        lastSymbol = c;
-                    } else if ((lastSymbol == '\"') & (c != '\"') & (IsLastQuotationMarkwasData)) {
-                        tempData.addCharToCableData(indexOfDataForTheActualCable, lastSymbol);
-                        lastSymbol = c;
-                        IsLastQuotationMarkwasData = false;
-
-                    }
-                    else if (strStarted) {
-                        tempData.addCharToCableData(indexOfDataForTheActualCable, lastSymbol);
-                        lastSymbol = c;
-
                     }
                 } else {
                     break;
