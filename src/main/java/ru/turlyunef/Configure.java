@@ -4,33 +4,34 @@ import java.util.HashMap;
 
 public interface Configure {
 
-    public int getElementsQuantityInStr();
+    int getElementsQuantityInStr();
 
-    public void setElementsQuantityInStr(int elementsQuantityInStr);
+    void setElementsQuantityInStr(int elementsQuantityInStr);
 
-    public int getLeftColumnCablesSection();
+    int getLeftColumnCablesSection();
 
-    public void setLeftColumnCablesSection(int leftColumnCablesSection);
+    void setLeftColumnCablesSection(int leftColumnCablesSection);
 
-    public int getRightColumnCablesSection();
+    int getRightColumnCablesSection();
 
-    public void setRightColumnCablesSection(int rightColumnCablesSection);
+    void setRightColumnCablesSection(int rightColumnCablesSection);
 
-    public int getColumnPositionOfQuantitySectionCables();
+    int getColumnPositionOfQuantitySectionCables();
 
-    public void setColumnPositionOfQuantitySectionCables(int columnPositionOfQuantitySectionCables);
+    void setColumnPositionOfQuantitySectionCables(int columnPositionOfQuantitySectionCables);
 
-    public int getColumnPositionOfQuantityCables();
+    int getColumnPositionOfQuantityCables();
 
-    public void setColumnPositionOfQuantityCables(int columnPositionOfQuantityCables);
+    void setColumnPositionOfQuantityCables(int columnPositionOfQuantityCables);
 
-    public String getWireNamesPath();
+    String getWireNamesPath();
 
-    public void setWireNamesPath(String wireNamesPath);
+    void setWireNamesPath(String wireNamesPath);
 
-    public String getTypeCablingPath();
+    String getTypeCablingPath();
 
-    public void setConfig(HashMap<String, String> config);
+    void setCfgHashMap(CfgHashMap cfgHashMap);
 
-    public HashMap<String, String> getConfig();
+    public CfgHashMap getCfgHashMap();
+
 }

@@ -10,11 +10,6 @@ public class ConfigureCableMagazine implements Configure {
     private int columnPositionOfQuantityCables = 29;
     private String wireNamesPath = "Config/Wires.txt";
     private final String typeCablingPath = "Config/TypeCabling.txt";
-    private HashMap<String, String> config;
-
-    public ConfigureCableMagazine(String configFilePath) {
-        config = FileConverter.parseConfig(configFilePath);
-    }
 
     @Override
     public int getElementsQuantityInStr() {
@@ -82,13 +77,13 @@ public class ConfigureCableMagazine implements Configure {
     }
 
     @Override
-    public void setConfig(HashMap<String, String> config) {
-        this.config = config;
+    public void setCfgHashMap(CfgHashMap cfgHashMap) {
+
     }
 
     @Override
-    public HashMap<String, String> getConfig() {
-        return config;
+    public CfgHashMap getCfgHashMap() {
+        return null;
     }
 }
 
